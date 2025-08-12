@@ -1,0 +1,293 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        768,
+        80
+      ],
+      "id": "e6d3eca0-6fa4-4633-9891-4935e4fc8dc7",
+      "name": "Wait",
+      "webhookId": "8ef07081-00a5-4077-ac7d-5bc7cbdaf466"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1184,
+        32
+      ],
+      "id": "3887b4b5-099c-4f7f-9a36-a5815b07b06b",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.text }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Sistem Promptu"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        208,
+        16
+      ],
+      "id": "bab9cec8-e111-4011-a43c-eee6afc7e0ae",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "content": "## Huggingface İsteğinin Alınması\n",
+        "height": 208,
+        "width": 224,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        -64
+      ],
+      "id": "e823a61c-e6de-4fc8-b8d0-39f62ddb716c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "196129dd-1169-4962-a836-db146b82a85a",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        16
+      ],
+      "id": "5bf3651e-4867-4cdb-be57-0c662c77807e",
+      "name": "Webhook",
+      "webhookId": "196129dd-1169-4962-a836-db146b82a85a"
+    },
+    {
+      "parameters": {
+        "content": "## Promptun Düzenlenmesi\n",
+        "height": 320,
+        "width": 304,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        176,
+        -32
+      ],
+      "id": "6e344738-a367-49a0-99b8-f94f0d2dcf57",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        224,
+        144
+      ],
+      "id": "94df167b-ce93-4ac9-ac8d-4b384ab3c6f7",
+      "name": "LLM",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ERmYNoSi3iV3nAeV",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.bfl.ai/v1/flux-kontext-max",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "x-key",
+              "value": "BFL_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt\": \"{{ $json.text }}\",\n  \"input_image\": \"{{ $('Webhook').item.json.body.image_base64 }}\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        576,
+        32
+      ],
+      "id": "11c1e283-835d-42b9-a14f-49dc7278f0ee",
+      "name": "POST"
+    },
+    {
+      "parameters": {
+        "content": "## Görüntünün İşlenmesi\n",
+        "height": 272,
+        "width": 608,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        496,
+        -32
+      ],
+      "id": "7dece174-216f-476c-b745-4491d0cfd315",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.polling_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-key",
+              "value": "BFL_API_KEY"
+            },
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        944,
+        32
+      ],
+      "id": "2485d549-4092-4bfd-9be8-45aef5afdc01",
+      "name": "GET"
+    },
+    {
+      "parameters": {
+        "content": "## Çıktının Huggingface' e Gönderilmesi\n",
+        "height": 224,
+        "width": 288,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        -64
+      ],
+      "id": "18a39c3a-3b81-40b5-a12f-37d104058a04",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "GET",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "POST",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "16b3ccd5-a71a-49b9-a817-4f89c4e20a9d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a7ad241383e3d5c9bde74a6f990a82c9c7f011315020ce383b030932bbfc428c"
+  },
+  "id": "H58VYN26g2dHGLUA",
+  "tags": []
+}
