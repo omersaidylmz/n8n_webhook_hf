@@ -1,6 +1,6 @@
 # Herkese Merhaba Arkadaşlar 🚀
 
-## Web tarafında gelen isteği alıp n8n iş akış şemasında işleyip çıktıyı üreten çalışmamın sonuçları şağıda ki gibidir.
+## Web tarafında gelen isteği alıp n8n iş akış şemasında işleyip çıktıyı üreten çalışmamın sonuçları aşağıda ki gibidir.
 
 ## Hugginface' den gelen görseli ve metni LLM yardımıya işleyip görsel üzerinde düzenlemeye yapmaya olanak veren Flux - Kontext model ile görselde istenildiği ekleme ve çıkarma yapılabilmektedir.
 
